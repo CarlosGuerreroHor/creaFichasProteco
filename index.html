@@ -42,10 +42,18 @@
             color: yellow;
         }
 
+        #verde{
+            color:green;
+        }
+
         @media (min-width: 600px) {
             #contenedor {
                 padding: 10px;
             }
+
+             #verde{
+            color:black;
+        }
 
             #tablaTallas {
                 float: left;
@@ -146,7 +154,7 @@
                 if (taquilla.length < ropa.length) {
                     taquilla[i] = "<div style='color:red' class='ocultar'>No escogido</div>";
                 }
-                $("table").append("<tr><td>" + ropa[i] + "</td><td style='color:green'>" + taquilla[i] + "</td><td class='ocultar'><button type='button' onclick='cambiaSeleccion(this.value)' id='boton" + i + "' value='" + i + "'>Modificar</button></td></tr>");
+                $("table").append("<tr><td>" + ropa[i] + "</td><td class='verde'>" + taquilla[i] + "</td><td class='ocultar'><button type='button' onclick='cambiaSeleccion(this.value)' id='boton" + i + "' value='" + i + "'>Modificar</button></td></tr>");
             }
 
             generaTallas();
