@@ -42,16 +42,14 @@
             color: yellow;
         }
 
-        .verde{
-            color:green;
+        .verde {
+            color: green;
         }
 
         @media (min-width: 600px) {
             #contenedor {
                 padding: 10px;
             }
-
-          
 
             #tablaTallas {
                 float: left;
@@ -74,15 +72,46 @@
             }
         }
 
+        img {
+            display: none;
+        }
+
+        .soloPrint {
+            display: none;
+        }
+
+        @page {
+            size: auto;
+            margin: 0mm;
+        }
 
         @media print {
 
-              .verde{
-            color:black;
-        }
+            img {
+                display: block;
+                position: fixed;
+
+            }
+
+            img:nth-child(odd) {
+                top: 20px;
+                left: 20px;
+                width: 50px;
+            }
+
+            img:nth-child(even) {
+                top: 5px;
+                right: 5px;
+                width: 130px;
+            }
+
+            .verde {
+                color: black;
+            }
 
             h1 {
                 color: black;
+                font-size: 20px;
             }
 
             .ocultar {
@@ -96,6 +125,7 @@
                 width: 80%;
                 margin-left: 10%;
                 color: black;
+                font-size: 10px;
             }
 
             table td,
@@ -104,15 +134,27 @@
                 padding: 8px;
             }
 
-
-
             table th {
-                padding-top: 12px;
-                padding-bottom: 12px;
+                padding-top: 10px;
+                padding-bottom: 10px;
                 text-align: left;
-                background-color: #04AA6D;
+                background-color: darkorange;
                 color: white;
+                text-align: center;
+                font-family: 'Courier New', monospace;
+                -webkit-print-color-adjust: exact;
+                font-size: 10px;
             }
+
+            tr:nth-child(odd) {
+                background-color: lightgray;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .soloPrint {
+                display: block;
+            }
+
 
         }
     </style>
@@ -125,7 +167,10 @@
         var ropa = [];
         ropa.push("Camiseta Campo Negra", "Camiseta Campo Naranja", "Camiseta Campo Bicolor", "Sudadera Campo Antigua",
             "Sudadera Campo Bicolor", "Chaquetilla Campo Bicolor", "Pantalon de Campo", "Polo Bicolor MC", "Polo Bicolor ML",
-            "Polo Negro MC", "Polo Negro ML", "Chaqueta Ciudad Bicolor", "Pantalón Negro", "Pantalón Cintura Alta", "Pantalón Traje", "Chaqueta Traje");
+            "Polo Negro MC", "Polo Negro ML", "Chaqueta Ciudad Bicolor", "Traje de Agua", "Chaqueta Traje Intervención", "Pantalón Negro"
+            , "Pantalón Cintura Alta", "Botas", "Chubasquero", "Pantalón Traje Intervención", "Guantes Trabajo Blancos",
+            "Térmico", "Galones Pecho", "Galones Hombro", "Gorro de Lana", "Segundas Botas", "Frontal", "Bolso Sanitario", "Guantes Ignifugos",
+            "Indicativo Pecho Plata y Naranja", "Galleta Junta Andalucia", "Escudo protección Civil Pecho", "Galleta Unidad", "Cinturon Hebilla");
         var taquilla = [];
 
         var seleccion = 0;
@@ -134,10 +179,31 @@
 
         function generaTallas() {
             $("#tablaTallas").empty();
-            for (let i = 0; i < tallas.length; i++) {
-                $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla" + i + "' value='" + tallas[i] + "'/>");
-                $("#tablaTallas").append("<label for='talla" + i + "' >" + tallas[i] + "<label/>");
+            if (seleccion <= 13) {
+                for (let i = 0; i < tallas.length; i++) {
+                    $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla" + i + "' value='" + tallas[i] + "'/>");
+                    $("#tablaTallas").append("<label for='talla" + i + "' >" + tallas[i] + "<label/>");
+                }
+            } else if (seleccion <= 18) {
+                $("#tablaTallas").append("<label for='talla' >introduzca la talla: <label/>");
+                $("#tablaTallas").append("<input type='text' name='talla' id='talla''/>");
+            } else if (seleccion <= 31) {
+                $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla1' value='Si'/>");
+                $("#tablaTallas").append("<label for='talla1' >Si<label/>");
+
+                $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla2' value='No'/>");
+                $("#tablaTallas").append("<label for='talla2' >No<label/>");
+
+                $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla3' value='Propiedad'/>");
+                $("#tablaTallas").append("<label for='talla3' >Propiedad<label/>");
+            } else if (seleccion = 32) {
+                $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla1' value='Azul'/>");
+                $("#tablaTallas").append("<label for='talla1' >Azul<label/>");
+
+                $("#tablaTallas").append("<input type='radio' class='radio' name='talla' id='talla2' value='Blanca'/>");
+                $("#tablaTallas").append("<label for='talla2' >Blanca<label/>");
             }
+
 
         }
 
@@ -145,13 +211,13 @@
             $("table").empty();
             $("h1").empty();
             $("form").css({ "display": "none" });
-            $("table").before("<h1>" + $("#nombre").val() + " - " + $("#divisivo").val() + "</h1>");
+            $("table").before("<h1>" + $("#nombre").val() + " " + $("#divisivo").val() + " Taquilla:" + $("#taquilla").val() + "</h1>");
 
             if (!$("#botonImprimir").length) {
                 $("table").after("<button type='button' class='ocultar' onclick='imprimir()' id='botonImprimir'>Imprimir</button>");
             }
 
-
+            $("table").append("<tr><th>MATERIAL</th><th>TALLA</th></tr>");
             for (let i = 0; i < ropa.length; i++) {
                 if (taquilla.length < ropa.length) {
                     taquilla[i] = "<div style='color:red' class='ocultar'>No escogido</div>";
@@ -170,15 +236,21 @@
         }
 
         function guardaRopa() {
-            if ($('input[name="talla"]:checked').val() != undefined) {
-                taquilla[seleccion] = $('input[name="talla"]:checked').val();
+            if ($('input[name="talla"]').val() != "") {
+                if ($('input[name="talla"]:checked').val() != undefined) {
+                    taquilla[seleccion] = $('input[name="talla"]:checked').val();
+                } else if ($('input[name ="talla"][type="text"]').val() != undefined) {
+                    taquilla[seleccion] = $('input[name="talla"]').val();
+                }
+
             }
+
 
         }
 
         function siguiente() {
             guardaRopa();
-            if (seleccion < ropa.length) {
+            if (seleccion < (ropa.length - 1)) {
                 seleccion++;
             }
             else {
@@ -214,11 +286,19 @@
         <input type="text" placeholder="Nombre" id="nombre">
         <p></p>
         <label for="">Divisivo:</label>
-        <input type="text" placeholder="divisivo" id="divisivo">
+        <input type="text" placeholder="Divisivo" id="divisivo">
+        <p></p>
+        <label for="">taquilla:</label>
+        <input type="text" placeholder="Taquilla" id="taquilla">
         <p></p>
         <button type="button" onclick="generaTabla()">siguiente</button>
     </form>
 
+    <img src="img/negro.png" alt="">
+    <img src="img/blanco.png" alt="">
+
+
+    <p class="soloPrint">Firme aqui: ________________</p>
 </body>
 
 </html>
